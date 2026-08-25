@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -49,4 +50,13 @@ test('guides visitors through services, process, work, and project planning', as
   assert.match(text, /From rough idea to resolved object/);
   assert.match(text, /Four deliberate steps/);
   assert.match(text, /Build your project brief/);
+});
+
+test('uses a wide logo canvas that fits horizontal brand placements', async () => {
+  const svg = await readFile('public/molinari-horizontal.svg', 'utf8');
+  const viewBox = svg.match(/viewBox="([^"]+)"/)?.[1].split(/\s+/).map(Number);
+
+  assert.ok(viewBox, 'horizontal logo must define a viewBox');
+  const [, , width, height] = viewBox;
+  assert.ok(width / height >= 2.5, `expected a horizontal canvas, got ${width}:${height}`);
 });

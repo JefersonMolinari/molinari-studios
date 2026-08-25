@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { access, readFile, rm } from 'node:fs/promises';
+import { spawnSync } from 'node:child_process';
 import test from 'node:test';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -59,4 +60,40 @@ test('uses a wide logo canvas that fits horizontal brand placements', async () =
   assert.ok(viewBox, 'horizontal logo must define a viewBox');
   const [, , width, height] = viewBox;
   assert.ok(width / height >= 2.5, `expected a horizontal canvas, got ${width}:${height}`);
+});
+
+test('exports the homepage for a GitHub Pages repository subpath', async () => {
+  await rm('out', { recursive: true, force: true });
+
+  const build = spawnSync(
+    process.execPath,
+    ['node_modules/next/dist/bin/next', 'build'],
+    {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        NODE_ENV: 'production',
+        GITHUB_PAGES: 'true',
+        GITHUB_REPOSITORY: 'test-owner/molinari-studios',
+        SITE_URL: 'https://test-owner.github.io/molinari-studios',
+      },
+    },
+  );
+
+  assert.equal(build.status, 0, `${build.stdout}\n${build.stderr}`);
+
+  const hasExport = await access('out/index.html').then(
+    () => true,
+    () => false,
+  );
+  assert.equal(hasExport, true, 'Next.js must emit out/index.html for GitHub Pages');
+
+  const html = await readFile('out/index.html', 'utf8');
+  assert.match(html, /\/molinari-studios\/_next\/static\//);
+  assert.match(html, /\/molinari-studios\/molinari-horizontal\.svg/);
+  assert.match(
+    html,
+    /<link[^>]+rel="icon"[^>]+href="\/molinari-studios\/favicon\.svg"/,
+  );
+  assert.match(html, /https:\/\/test-owner\.github\.io\/molinari-studios\/og\.png/);
 });

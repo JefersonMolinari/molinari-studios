@@ -1,10 +1,13 @@
+const assetPath = (path: string) =>
+  `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`;
+
 export default function Home() {
   return (
     <main>
       <section className="hero" id="top">
         <header className="site-header shell">
           <a className="brand" href="#top" aria-label="Molinari Studios home">
-            <img src="/molinari-horizontal.svg" alt="Molinari STUDIOS" />
+            <img src={assetPath('/molinari-horizontal.svg')} alt="Molinari STUDIOS" />
           </a>
 
           <nav aria-label="Primary navigation">
@@ -36,7 +39,7 @@ export default function Home() {
             <div className="object-ring ring-one" />
             <div className="object-ring ring-two" />
             <div className="object-core">
-              <img src="/molinari-mark.svg" alt="" aria-hidden="true" />
+              <img src={assetPath('/molinari-mark.svg')} alt="" aria-hidden="true" />
             </div>
             <p className="object-note note-top">Layer by layer</p>
             <p className="object-note note-bottom">Made with intent</p>
@@ -101,7 +104,7 @@ export default function Home() {
           <div className="statement-art" aria-label="Layered material study">
             <div className="material-slab slab-back" />
             <div className="material-slab slab-mid" />
-            <div className="material-slab slab-front"><img src="/molinari-mark.svg" alt="" /></div>
+            <div className="material-slab slab-front"><img src={assetPath('/molinari-mark.svg')} alt="" /></div>
             <span className="measure-line measure-a">0.2 mm layers</span>
             <span className="measure-line measure-b">Built to purpose</span>
           </div>
@@ -174,7 +177,7 @@ export default function Home() {
 
       <section className="contact-section" id="contact">
         <div className="shell contact-grid">
-          <div className="contact-mark"><img src="/molinari-mark.svg" alt="" /></div>
+          <div className="contact-mark"><img src={assetPath('/molinari-mark.svg')} alt="" /></div>
           <div className="contact-copy">
             <p className="section-kicker light">Have something in mind?</p>
             <h2>Build your <em>project brief.</em></h2>
@@ -189,7 +192,7 @@ export default function Home() {
 
       <footer className="site-footer">
         <div className="shell footer-grid">
-          <a className="footer-brand" href="#top"><img src="/molinari-horizontal.svg" alt="Molinari STUDIOS" /></a>
+          <a className="footer-brand" href="#top"><img src={assetPath('/molinari-horizontal.svg')} alt="Molinari STUDIOS" /></a>
           <p>Custom 3D printing · Design-led fabrication</p>
           <a href="#top">Back to top ↑</a>
         </div>

@@ -1,9 +1,10 @@
 import type { NextConfig } from 'next';
 
 const isGitHubPagesBuild = process.env.GITHUB_PAGES === 'true';
+const hasCustomDomain = Boolean(process.env.CUSTOM_DOMAIN);
 const repositoryName =
   process.env.GITHUB_REPOSITORY?.split('/').at(-1) ?? 'molinari-studios';
-const basePath = isGitHubPagesBuild ? `/${repositoryName}` : '';
+const basePath = isGitHubPagesBuild && !hasCustomDomain ? `/${repositoryName}` : '';
 
 const nextConfig: NextConfig = {
   ...(isGitHubPagesBuild

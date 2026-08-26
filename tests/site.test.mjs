@@ -97,3 +97,32 @@ test('exports the homepage for a GitHub Pages repository subpath', async () => {
   );
   assert.match(html, /https:\/\/test-owner\.github\.io\/molinari-studios\/og\.png/);
 });
+
+test('exports the homepage at the custom domain root', async () => {
+  await rm('out', { recursive: true, force: true });
+
+  const build = spawnSync(
+    process.execPath,
+    ['node_modules/next/dist/bin/next', 'build'],
+    {
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        NODE_ENV: 'production',
+        GITHUB_PAGES: 'true',
+        GITHUB_REPOSITORY: 'test-owner/molinari-studios',
+        CUSTOM_DOMAIN: 'molinaristudios.com',
+        SITE_URL: 'https://molinaristudios.com',
+      },
+    },
+  );
+
+  assert.equal(build.status, 0, `${build.stdout}\n${build.stderr}`);
+
+  const html = await readFile('out/index.html', 'utf8');
+  assert.match(html, /(?:src|href)="\/_next\/static\//);
+  assert.match(html, /src="\/molinari-horizontal\.svg"/);
+  assert.match(html, /<link[^>]+rel="icon"[^>]+href="\/favicon\.svg"/);
+  assert.match(html, /https:\/\/molinaristudios\.com\/og\.png/);
+  assert.doesNotMatch(html, /(?:src|href)="\/molinari-studios\//);
+});

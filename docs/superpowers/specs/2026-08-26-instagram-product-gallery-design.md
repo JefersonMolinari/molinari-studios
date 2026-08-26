@@ -1,6 +1,6 @@
 # Instagram Product Gallery Design
 
-**Date:** 2026-08-26  
+**Date:** 2026-08-26
 **Status:** Approved in conversation; awaiting written-spec review
 
 ## Objective
@@ -74,7 +74,8 @@ The website copy may be lightly edited for clarity and consistency, but it must 
 - The primary CTA URL is `https://ig.me/m/molinaristudios` and opens in a new tab.
 - The secondary action opens the corresponding source post in a new tab.
 - Every external link uses `rel="noreferrer"` or the framework-equivalent safe relationship value.
-- If the direct DM route cannot be validated during implementation, replace the primary target with `https://www.instagram.com/molinaristudios/`; do not ship a broken direct-message link.
+- Define `instagramDmUrl` once at catalog level and reuse it for every product and custom-order CTA. Its preferred value is `https://ig.me/m/molinaristudios`.
+- Define `instagramProfileUrl` once as `https://www.instagram.com/molinaristudios/`. If the preferred direct route cannot be validated during implementation, set `instagramDmUrl` to this profile URL before the site is built; do not add per-card fallbacks or ship a broken direct-message link.
 
 ## Architecture
 
@@ -94,6 +95,8 @@ Keep catalog content in a small typed data module rather than embedding nine rep
 
 The data is local and build-time only. No Instagram API, database, client-side fetching, or runtime synchronization is required.
 
+The typed module also exports the shared `instagramDmUrl` and `instagramProfileUrl` values. Product records do not repeat the DM target.
+
 ### Components
 
 - A product-gallery component receives the eight normal product records and renders the grid.
@@ -108,7 +111,7 @@ Components remain server-rendered and static unless an actual interaction requir
 - Download approved images from the owner's Instagram posts and store them in `public/products/`.
 - Use stable, descriptive filenames rather than Instagram CDN names.
 - Do not hotlink Instagram CDN URLs; the deployed gallery must remain visible if Instagram changes or rate-limits its media URLs.
-- Convert the selected source images to WebP at a consistent quality setting that preserves product detail while avoiding unnecessarily large files.
+- Convert the selected source images to WebP at quality 82, preserving aspect ratio and never upscaling. Cap the longest edge at 1,600 pixels, target no more than 300 KB per image, and keep the nine-image catalog at or below 2.7 MB total. If an image exceeds its target, lower quality only as much as needed while checking that product detail remains clear.
 - Do not alter `public/og.png`; the catalog change does not change the site's brand identity or primary social headline.
 
 ## Failure Behavior
@@ -136,14 +139,15 @@ Add or update automated tests to verify:
 - the navigation and hero link target the Products section;
 - exactly eight normal products are rendered;
 - the Custom Event Medals feature is present and identified as a custom-order example;
-- every selected record has a local image, meaningful alt text, Instagram source URL, and DM action;
+- every selected record has a local image, meaningful alt text, and Instagram source URL;
+- every rendered DM action uses the single resolved `instagramDmUrl`, whose value must be either the validated direct route or the documented profile fallback;
 - product image files exist under `public/products/`;
 - repeated external actions use safe new-tab attributes;
 - the existing GitHub Pages repository-subpath export still succeeds;
 - the custom-domain root export still succeeds;
 - the project test suite, lint, and production build pass.
 
-After the smallest representative product slice compiles, show the local preview through the existing Sites workflow. After the full change passes validation, publish the Sites version and push the commit to the GitHub repository so the existing GitHub Pages workflow updates `https://molinaristudios.com/`.
+After the smallest representative product slice compiles, show the local preview through the existing Sites workflow. Production publishing happens only after the full implementation satisfies the acceptance criteria below.
 
 ## Out of Scope
 
@@ -165,4 +169,11 @@ The change is complete when:
 4. The gallery matches the existing Molinari STUDIOS visual system and works on desktop and mobile layouts.
 5. The catalog remains visible without a live Instagram data request.
 6. Automated tests, lint, and production exports pass.
-7. The updated site is published through both the current Sites deployment and the GitHub Pages workflow serving `molinaristudios.com`.
+
+## Release Checklist
+
+Once the implementation is accepted and ready for release:
+
+1. Publish the validated source through the current Sites deployment flow.
+2. Push the release commit to the GitHub repository's `main` branch.
+3. Confirm the existing GitHub Pages workflow completes and serves the updated catalog at `https://molinaristudios.com/`.

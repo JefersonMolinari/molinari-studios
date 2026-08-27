@@ -95,6 +95,7 @@ test('exports the homepage for a GitHub Pages repository subpath', async () => {
         NODE_ENV: 'production',
         GITHUB_PAGES: 'true',
         GITHUB_REPOSITORY: 'test-owner/molinari-studios',
+        CUSTOM_DOMAIN: '',
         SITE_URL: 'https://test-owner.github.io/molinari-studios',
       },
     },
@@ -111,6 +112,10 @@ test('exports the homepage for a GitHub Pages repository subpath', async () => {
   const html = await readFile('out/index.html', 'utf8');
   assert.match(html, /\/molinari-studios\/_next\/static\//);
   assert.match(html, /\/molinari-studios\/molinari-horizontal\.svg/);
+  assert.match(
+    html,
+    /src="\/molinari-studios\/products\/personalized-collectible\.webp"/,
+  );
   assert.match(
     html,
     /<link[^>]+rel="icon"[^>]+href="\/molinari-studios\/favicon\.svg"/,
@@ -142,6 +147,8 @@ test('exports the homepage at the custom domain root', async () => {
   const html = await readFile('out/index.html', 'utf8');
   assert.match(html, /(?:src|href)="\/_next\/static\//);
   assert.match(html, /src="\/molinari-horizontal\.svg"/);
+  assert.match(html, /src="\/products\/personalized-collectible\.webp"/);
+  assert.doesNotMatch(html, /src="\/molinari-studios\/products\//);
   assert.match(html, /<link[^>]+rel="icon"[^>]+href="\/favicon\.svg"/);
   assert.match(html, /https:\/\/molinaristudios\.com\/og\.png/);
   assert.doesNotMatch(html, /(?:src|href)="\/molinari-studios\//);

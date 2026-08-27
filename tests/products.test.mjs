@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { readFile, stat } from 'node:fs/promises';
+import path from 'node:path';
 import test from 'node:test';
 import react from '@vitejs/plugin-react';
 import { createServer } from 'vite';
@@ -56,4 +58,22 @@ test('defines the approved Instagram catalog and one shared DM target', async ()
       `${item.slug} needs useful copy`,
     );
   }
+});
+
+test('ships optimized local WebP media for every catalog item', async () => {
+  const { catalogItems } = await loadCatalog();
+  let totalBytes = 0;
+
+  for (const item of catalogItems) {
+    const filePath = path.join('public', item.image.slice(1));
+    const bytes = await readFile(filePath);
+    const info = await stat(filePath);
+
+    assert.equal(bytes.subarray(0, 4).toString('ascii'), 'RIFF');
+    assert.equal(bytes.subarray(8, 12).toString('ascii'), 'WEBP');
+    assert.ok(info.size <= 300 * 1024, `${item.slug} exceeds 300 KB`);
+    totalBytes += info.size;
+  }
+
+  assert.ok(totalBytes <= 2.7 * 1024 * 1024, 'catalog media exceeds 2.7 MB');
 });

@@ -40,17 +40,37 @@ test('provides navigation and a direct project-start action', async () => {
   assert.match(html, />Start a project</);
 });
 
-test('guides visitors through services, process, work, and project planning', async () => {
+test('guides visitors through services, process, products, and project planning', async () => {
   const html = await renderHomePage();
   const text = html.replace(/<[^>]*>/g, '');
 
   assert.match(html, /id="services"/);
   assert.match(html, /id="process"/);
-  assert.match(html, /id="work"/);
+  assert.match(html, /id="products"/);
   assert.match(html, /id="contact"/);
   assert.match(text, /From rough idea to resolved object/);
   assert.match(text, /Four deliberate steps/);
   assert.match(text, /Build your project brief/);
+});
+
+test('renders the approved product catalog and Instagram actions', async () => {
+  const html = await renderHomePage();
+
+  assert.match(html, /id="products"/);
+  assert.doesNotMatch(html, /id="work"/);
+  assert.equal((html.match(/data-catalog-kind="product"/g) ?? []).length, 8);
+  assert.equal(
+    (html.match(/data-catalog-kind="custom-order"/g) ?? []).length,
+    1,
+  );
+  assert.match(html, /Personalized Collectible/);
+  assert.match(html, /Custom Event Medals/);
+  assert.equal((html.match(/>DM on Instagram\s*</g) ?? []).length, 9);
+  assert.equal((html.match(/>View original post</g) ?? []).length, 9);
+  assert.equal((html.match(/target="_blank"/g) ?? []).length, 18);
+  assert.equal((html.match(/rel="noreferrer"/g) ?? []).length, 18);
+  assert.match(html, /href="#products"[^>]*>Products</);
+  assert.match(html, /href="#products"[^>]*>Explore products\s*</);
 });
 
 test('uses a wide logo canvas that fits horizontal brand placements', async () => {

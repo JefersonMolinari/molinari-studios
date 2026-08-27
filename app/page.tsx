@@ -1,3 +1,6 @@
+import { customOrder, products } from './products/catalog';
+import { ProductGallery } from './products/product-gallery';
+
 const assetPath = (path: string) =>
   `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`;
 
@@ -13,7 +16,7 @@ export default function Home() {
           <nav aria-label="Primary navigation">
             <a href="#services">Services</a>
             <a href="#process">Process</a>
-            <a href="#work">Work</a>
+            <a href="#products">Products</a>
           </nav>
 
           <a className="header-cta" href="#contact">
@@ -31,7 +34,7 @@ export default function Home() {
             </p>
             <div className="hero-actions">
               <a className="button button-brass" href="#contact">Start a project <span>↗</span></a>
-              <a className="text-link" href="#work">Explore our work <span>↓</span></a>
+              <a className="text-link" href="#products">Explore products <span>↓</span></a>
             </div>
           </div>
 
@@ -139,31 +142,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="work-section section" id="work">
-        <div className="shell">
-          <div className="section-heading">
-            <div>
-              <p className="section-kicker">Made for the real world</p>
-              <h2>Objects with a <em>job to do.</em></h2>
-            </div>
-            <p className="section-lede">A few of the ways considered 3D printing can move an idea forward.</p>
-          </div>
-          <div className="work-grid">
-            <article className="work-card work-card-wide">
-              <div className="work-visual functional-visual" aria-hidden="true"><div className="part part-a"/><div className="part part-b"/><div className="part part-c"/></div>
-              <div className="work-meta"><div><span>Application 01</span><h3>Functional prototyping</h3></div><p>Test fit, movement, assembly, and intent before committing to the final form.</p></div>
-            </article>
-            <article className="work-card">
-              <div className="work-visual detail-visual" aria-hidden="true"><div className="detail-column"/><div className="detail-shadow"/></div>
-              <div className="work-meta"><div><span>Application 02</span><h3>Architectural detail</h3></div><p>Models and components that make scale, proportion, and detail easy to understand.</p></div>
-            </article>
-            <article className="work-card">
-              <div className="work-visual display-visual" aria-hidden="true"><div className="display-plinth"/><div className="display-object"/></div>
-              <div className="work-meta"><div><span>Application 03</span><h3>Collector display</h3></div><p>Tailored mounts, stands, and presentation pieces that quietly support what matters.</p></div>
-            </article>
-          </div>
-        </div>
-      </section>
+      <ProductGallery items={products} customOrder={customOrder} />
 
       <section className="capabilities-strip">
         <div className="shell capabilities-list">

@@ -43,7 +43,10 @@ function ProductCard({ item, index }: { item: CatalogItem; index: number }) {
           src={assetPath(item.image)}
           alt={item.alt}
           loading="lazy"
-          style={{ objectPosition: item.imagePosition ?? 'center' }}
+          style={{
+            objectFit: item.imageFit ?? 'cover',
+            objectPosition: item.imagePosition ?? 'center',
+          }}
         />
         <span className="product-number">
           {String(index + 1).padStart(2, '0')}
@@ -93,6 +96,7 @@ export function ProductGallery({ items, customOrder }: ProductGalleryProps) {
               alt={customOrder.alt}
               loading="lazy"
               style={{
+                objectFit: customOrder.imageFit ?? 'cover',
                 objectPosition: customOrder.imagePosition ?? 'center',
               }}
             />

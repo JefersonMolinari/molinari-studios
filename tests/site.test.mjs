@@ -65,6 +65,10 @@ test('renders the approved product catalog and Instagram actions', async () => {
   );
   assert.match(html, /Personalized Collectible/);
   assert.match(html, /Custom Event Medals/);
+  assert.match(
+    html,
+    /src="\/products\/personalized-collectible\.webp"[^>]*style="[^"]*object-fit:contain/,
+  );
   assert.equal((html.match(/>DM on Instagram\s*</g) ?? []).length, 9);
   assert.equal((html.match(/>View original post</g) ?? []).length, 9);
   assert.equal((html.match(/target="_blank"/g) ?? []).length, 18);

@@ -721,18 +721,18 @@ h1 em {
 }
 
 .product-copy { padding: 30px; }
-.product-note { margin: 0; color: #927031; font-size: 9px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.product-note { margin: 0; color: #806024; font-size: 9px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
 .product-copy h3,
 .custom-order-copy h3 { margin: 10px 0 14px; color: var(--green); font-family: Georgia, 'Times New Roman', serif; font-size: clamp(27px, 3vw, 38px); font-weight: 400; }
 .product-copy > p:not(.product-note),
-.custom-order-copy > p:not(.product-note) { margin: 0; color: #69736e; font-size: 14px; line-height: 1.7; }
+.custom-order-copy > p:not(.product-note) { margin: 0; color: #5e6964; font-size: 14px; line-height: 1.7; }
 
 .product-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 24px; }
 .product-action { font-size: 10px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
 .product-action-primary { padding: 13px 16px; background: var(--green); color: var(--cream); }
-.product-action-primary:hover { background: var(--brass); }
+.product-action-primary:hover { background: var(--brass); color: var(--green); }
 .product-action-secondary { padding-block: 9px; border-bottom: 1px solid #a99679; color: var(--green); }
-.product-action:focus-visible { outline: 3px solid #d4b067; outline-offset: 4px; }
+.product-action:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; }
 
 .custom-order-card {
   margin-top: 72px;
@@ -746,10 +746,12 @@ h1 em {
 .custom-order-image-frame { min-height: 520px; }
 .custom-order-copy { align-self: center; padding: clamp(36px, 6vw, 80px); }
 .custom-order-copy h3 { color: var(--cream); font-size: clamp(38px, 4vw, 58px); }
+.custom-order-copy .product-note { color: #d4b067; }
 .custom-order-copy > p:not(.product-note) { color: rgba(243,235,221,.72); }
-.custom-order-copy .product-action-primary { background: var(--brass); }
+.custom-order-copy .product-action-primary { background: var(--brass); color: var(--green); }
 .custom-order-copy .product-action-primary:hover { background: #c49a48; }
 .custom-order-copy .product-action-secondary { border-color: rgba(243,235,221,.45); color: var(--cream); }
+.custom-order-copy .product-action:focus-visible { outline-color: var(--cream); }
 
 @media (max-width: 800px) {
   .products-grid { grid-template-columns: 1fr; }

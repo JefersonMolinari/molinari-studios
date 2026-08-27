@@ -8,6 +8,7 @@ export type CatalogItem = {
   image: string;
   alt: string;
   sourceUrl: string;
+  imageFit?: 'cover' | 'contain';
   imagePosition?: string;
   kind: CatalogKind;
 };
@@ -28,6 +29,7 @@ export const catalogItems: CatalogItem[] = [
     image: '/products/personalized-collectible.webp',
     alt: 'Personalized 3D-printed collectible figure displayed for a customer gift',
     sourceUrl: 'https://www.instagram.com/molinaristudios/p/Dcgypi5tJ8F/',
+    imageFit: 'contain',
     kind: 'product',
   },
   {

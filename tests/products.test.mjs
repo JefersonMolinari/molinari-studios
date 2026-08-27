@@ -45,6 +45,10 @@ test('defines the approved Instagram catalog and one shared DM target', async ()
       catalog.instagramDmUrl,
     ),
   );
+  const personalized = catalog.catalogItems.find(
+    (item) => item.slug === 'personalized-collectible',
+  );
+  assert.equal(personalized?.imageFit, 'contain');
 
   for (const item of catalog.catalogItems) {
     assert.match(item.image, /^\/products\/[a-z0-9-]+\.webp$/);

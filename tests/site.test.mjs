@@ -53,6 +53,32 @@ test('guides visitors through services, process, products, and project planning'
   assert.match(text, /Build your project brief/);
 });
 
+test('provides an addressed project enquiry email draft', async () => {
+  const html = await renderHomePage();
+  const href = html.match(/<a\b[^>]*\shref="([^"]+)"[^>]*>\s*Draft an enquiry\b/)?.[1];
+
+  assert.ok(href, 'expected a Draft an enquiry link');
+  const draft = new URL(href.replaceAll('&amp;', '&'));
+  assert.equal(draft.protocol, 'mailto:');
+  assert.equal(draft.pathname, 'contact@molinaristudios.com');
+  assert.equal(draft.searchParams.get('subject'), 'Molinari STUDIOS project enquiry');
+  assert.deepEqual(draft.searchParams.get('body')?.split('\r\n'), [
+    'Project type:',
+    'What it needs to do:',
+    'Approximate size:',
+    'Quantity:',
+    'Timeline:',
+    'Files or references:',
+  ]);
+  assert.match(html, /Opens a draft in your email app with a few prompts about your project\./);
+});
+
+test('omits resin printing from the homepage', async () => {
+  const html = await renderHomePage();
+
+  assert.equal(/resin printing/i.test(html), false, 'the homepage still lists resin printing');
+});
+
 test('renders the approved product catalog and Instagram actions', async () => {
   const html = await renderHomePage();
 

@@ -4,6 +4,19 @@ import { ProductGallery } from './products/product-gallery';
 const assetPath = (path: string) =>
   `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}${path}`;
 
+const projectEnquirySubject = 'Molinari STUDIOS project enquiry';
+const projectEnquiryBody = [
+  'Project type:',
+  'What it needs to do:',
+  'Approximate size:',
+  'Quantity:',
+  'Timeline:',
+  'Files or references:',
+].join('\r\n');
+const projectEnquiryHref =
+  `mailto:contact@molinaristudios.com?subject=${encodeURIComponent(projectEnquirySubject)}` +
+  `&body=${encodeURIComponent(projectEnquiryBody)}`;
+
 export default function Home() {
   return (
     <main>
@@ -147,7 +160,6 @@ export default function Home() {
       <section className="capabilities-strip">
         <div className="shell capabilities-list">
           <span>FDM printing</span><i />
-          <span>Resin printing</span><i />
           <span>CAD refinement</span><i />
           <span>Surface finishing</span><i />
           <span>Small runs</span>
@@ -161,10 +173,10 @@ export default function Home() {
             <p className="section-kicker light">Have something in mind?</p>
             <h2>Build your <em>project brief.</em></h2>
             <p>Start with what you know. A sketch, a broken part, a CAD file, or even a rough description is enough to begin the conversation.</p>
-            <a className="button button-cream" href="mailto:?subject=Molinari%20STUDIOS%20project%20enquiry&amp;body=Project%20type%3A%0AWhat%20it%20needs%20to%20do%3A%0AApproximate%20size%3A%0AQuantity%3A%0ATimeline%3A%0AFiles%20or%20references%3A">
+            <a className="button button-cream" href={projectEnquiryHref}>
               Draft an enquiry <span>↗</span>
             </a>
-            <small>Opens a ready-to-fill project brief in your email app.</small>
+            <small>Opens a draft in your email app with a few prompts about your project.</small>
           </div>
         </div>
       </section>
